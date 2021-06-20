@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         target:
-          - { ARCH: "i386", build_file: "appimagecraft-i386.yml" }
+          #- { ARCH: "i386", build_file: "appimagecraft-i386.yml" }
           - { ARCH: "x86_64", build_file: "appimagecraft.yml" }
     env:
       APPIMAGE_EXTRACT_AND_RUN: 1
