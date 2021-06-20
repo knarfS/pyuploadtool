@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libc6-dev gcc-multilib
+          sudo apt-get install -y libc6-dev gcc-multilib python3-nacl
       - uses: actions/checkout@v2
       - name: Build AppImage
         run: |
