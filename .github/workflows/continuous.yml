@@ -36,9 +36,14 @@ jobs:
       - name: Build AppImage
         run: |
           set -x
+          set +e
           wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-${{ matrix.target.ARCH }}.AppImage
           chmod +x appimagecraft-${{ matrix.target.ARCH }}.AppImage
-          ./appimagecraft-${{ matrix.target.ARCH }}.AppImage build -f ${{ matrix.target.build_file }}
+          ./appimagecraft-${{ matrix.target.ARCH }}.AppImage genscripts -d build -f ${{ matrix.target.build_file }}
+          cd build
+          ./build.sh
+          #cat /tmp/pip-install-lsj6d52u/pynacl_2a51de115dd944919e5fd0d654c6a5f2/build/config.log
+          #cat /tmp/pip-install-lsj6d52u/pynacl_2a51de115dd944919e5fd0d654c6a5f2/config.log
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
