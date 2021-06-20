@@ -51,7 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ARCH: ["i386", "x86_64"]
+        #ARCH: ["i386", "x86_64"]
+        ARCH: ["x86_64"]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
