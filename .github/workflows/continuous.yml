@@ -29,12 +29,15 @@ jobs:
       APPIMAGE_EXTRACT_AND_RUN: 1
       ARCH: ${{ matrix.target.ARCH }}
     steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y libc6-dev
       - uses: actions/checkout@v2
       - name: Build AppImage
         run: |
-            wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-${{ matrix.target.ARCH }}.AppImage
-            chmod +x appimagecraft-${{ matrix.target.ARCH }}.AppImage
-            ./appimagecraft-${{ matrix.target.ARCH }}.AppImage build -f ${{ matrix.target.build_file }}
+          wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-${{ matrix.target.ARCH }}.AppImage
+          chmod +x appimagecraft-${{ matrix.target.ARCH }}.AppImage
+          ./appimagecraft-${{ matrix.target.ARCH }}.AppImage build -f ${{ matrix.target.build_file }}
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
