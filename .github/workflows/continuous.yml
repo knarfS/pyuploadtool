@@ -31,10 +31,11 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libc6-dev
+          sudo apt-get install -y libc6-dev gcc-multilib
       - uses: actions/checkout@v2
       - name: Build AppImage
         run: |
+          set -x
           wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-${{ matrix.target.ARCH }}.AppImage
           chmod +x appimagecraft-${{ matrix.target.ARCH }}.AppImage
           ./appimagecraft-${{ matrix.target.ARCH }}.AppImage build -f ${{ matrix.target.build_file }}
