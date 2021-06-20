@@ -27,11 +27,11 @@ jobs:
           #- { ARCH: "x86_64", build_file: "appimagecraft.yml" }
     env:
       APPIMAGE_EXTRACT_AND_RUN: 1
-      ARCH: ${{ matrix.target.ARCH }}
+      #ARCH: ${{ matrix.target.ARCH }}
     steps:
       - name: Install dependencies
         run: |
-          sudo apt-get install -y libc6-dev gcc-multilib python3-nacl
+          sudo apt-get install -y libc6-dev gcc-multilib
       - uses: actions/checkout@v2
       - name: Build AppImage
         run: |
