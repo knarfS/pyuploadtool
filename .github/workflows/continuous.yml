@@ -16,28 +16,39 @@ jobs:
         run: python3 -m poetry run black --check pyuploadtool/
 
   build-appimage:
-    name: Build AppImage
+    name: Build AppImage (${{ matrix.target.ARCH }})
     needs:
       - qa
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - { ARCH: "i386", build_file: "appimagecraft-i386.yml" }
+          - { ARCH: "x86_64", build_file: "appimagecraft.yml" }
+    env:
+      APPIMAGE_EXTRACT_AND_RUN: 1
+      ARCH: ${{ matrix.target.ARCH }}
     steps:
       - uses: actions/checkout@v2
       - name: Build AppImage
         run: |
-            wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-x86_64.AppImage
-            chmod +x appimagecraft-x86_64.AppImage
-            ./appimagecraft-x86_64.AppImage
+            wget https://github.com/TheAssassin/appimagecraft/releases/download/continuous/appimagecraft-${{ matrix.target.ARCH }}.AppImage
+            chmod +x appimagecraft-${{ matrix.target.ARCH }}.AppImage
+            ./appimagecraft-${{ matrix.target.ARCH }}.AppImage build -f ${{ matrix.target.build_file }}
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: AppImage
+          name: AppImage ${{ matrix.target.ARCH }}
           path: pyuploadtool*.AppImage*
 
   upload:
-    name: Create release and upload artifacts
+    name: Create release and upload artifacts (${{ matrix.ARCH }})
     needs:
       - build-appimage
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ARCH: ["i386", "x86_64"]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
@@ -48,5 +59,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             cd AppImage
-            chmod +x pyuploadtool-x86_64.AppImage
-            ./pyuploadtool-x86_64.AppImage pyuploadtool-x86_64.AppImage
+            chmod +x pyuploadtool-${{ matrix.ARCH }}.AppImage
+            ./pyuploadtool-${{ matrix.ARCH }}.AppImage pyuploadtool-${{ matrix.ARCH }}.AppImage
