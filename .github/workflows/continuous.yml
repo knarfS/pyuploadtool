@@ -62,6 +62,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            cd AppImage
+            cd "AppImage ${{ matrix.ARCH }}"
             chmod +x pyuploadtool-${{ matrix.ARCH }}.AppImage
             ./pyuploadtool-${{ matrix.ARCH }}.AppImage pyuploadtool-${{ matrix.ARCH }}.AppImage
